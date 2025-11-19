@@ -1,0 +1,20 @@
+{
+  "name": "web-checkin-hjmerlo-frontend",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-11-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "account_id": "2f3908cdc8144259a33787fc24ded7c8",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "API",
+      "service": "web-checkin-api"
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_API_URL": "https://web-checkin-api.fvazquez-2f3.workers.dev"
+  }
+}
