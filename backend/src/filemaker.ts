@@ -64,6 +64,15 @@ export async function syncCheckinToFileMaker(
   let token: string | null = null
 
   try {
+    // Validar que guests sea un array
+    if (!Array.isArray(checkinData.guests)) {
+      console.error('Invalid checkinData: guests is not an array', checkinData)
+      return {
+        success: false,
+        error: 'checkinData.guests is not iterable'
+      }
+    }
+
     // 1. Autenticar
     token = await getFileMakerToken(env)
     console.log('FileMaker: authenticated')
@@ -74,6 +83,12 @@ export async function syncCheckinToFileMaker(
     const createDocUrl = `https://${env.FILEMAKER_HOST}/fmi/data/v1/databases/${env.FILEMAKER_DATABASE}/layouts/${env.FILEMAKER_LAYOUT_DOCUMENTS}/records`
 
     for (const guest of checkinData.guests) {
+      // Construir URLs completas para las imágenes
+      const baseUrl = 'https://web-checkin-api.fvazquez-2f3.workers.dev'
+      const frontUrl = `${baseUrl}/api/web-checkin/document/${guest.dni}/front`
+      const backUrl = `${baseUrl}/api/web-checkin/document/${guest.dni}/back`
+      const signatureUrl = `${baseUrl}/api/web-checkin/document/${guest.dni}/signature`
+
       const fieldData: Record<string, any> = {
         'id_session': checkinData.sessionId,
         'guest_type': guest.guestType,
@@ -90,6 +105,10 @@ export async function syncCheckinToFileMaker(
         'r2_front_key': guest.frontImageKey,
         'r2_back_key': guest.backImageKey,
         'r2_signature_key': guest.signatureKey,
+        // TODO: Descomentar cuando agregues estos campos en FileMaker
+        // 'front_image_url': frontUrl,
+        // 'back_image_url': backUrl,
+        // 'signature_url': signatureUrl,
         'pdf417_parsed_successfully': 0,
         'ocr_fallback_used': 0,
         'upload_count': 1,

@@ -527,6 +527,14 @@ async function handleSubmitGuest(
     // Guardar documento del guest en KV
     await env.CHECKIN_DATA.put(`guest:${documentId}`, JSON.stringify(guestDocument))
 
+    // Guardar mapeo DNI → sessionId + order para recuperar imágenes
+    await env.CHECKIN_DATA.put(`dni:${data.dni}`, JSON.stringify({
+      sessionId: session.sessionId,
+      order: data.order
+    }), {
+      expirationTtl: 72 * 60 * 60
+    })
+
     // Obtener o crear el CheckinData general
     const checkinKey = `checkin:${session.sessionId}`
     let checkinData: CheckinData
@@ -608,20 +616,22 @@ async function handleGetDocument(
     return jsonResponse({ error: 'Parámetros inválidos' }, 400, corsHeaders)
   }
 
-  // Buscar el check-in asociado a este DNI
-  const dniDataStr = await env.CHECKIN_DATA.get(`dni:${dni}`)
-  if (!dniDataStr) {
+  // Buscar el mapeo DNI → sessionId + order
+  const dniMappingStr = await env.CHECKIN_DATA.get(`dni:${dni}`)
+  if (!dniMappingStr) {
     return jsonResponse({ error: 'Documento no encontrado' }, 404, corsHeaders)
   }
 
-  // Construir la key del R2
-  // TODO: Obtener el checkinId real del DNI
-  const key = `${dni}_${type}.${type === 'signature' ? 'png' : 'jpg'}`
+  const dniMapping: { sessionId: string; order: number } = JSON.parse(dniMappingStr)
+
+  // Construir la key del R2 basada en sessionId + order
+  const extension = type === 'signature' ? 'png' : 'jpg'
+  const key = `${dniMapping.sessionId}_${dniMapping.order}_${type}.${extension}`
 
   const object = await env.STORAGE.get(key)
 
   if (!object) {
-    return jsonResponse({ error: 'Imagen no encontrada' }, 404, corsHeaders)
+    return jsonResponse({ error: 'Imagen no encontrada en R2', key }, 404, corsHeaders)
   }
 
   return new Response(object.body, {
