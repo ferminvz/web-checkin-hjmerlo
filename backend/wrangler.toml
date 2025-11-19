@@ -1,0 +1,40 @@
+name = "web-checkin-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-18"
+
+[vars]
+ENVIRONMENT = "production"
+
+# FileMaker Data API Configuration
+# TODO: Completar con tus credenciales de FileMaker
+FILEMAKER_HOST = "fm.hjmerlo.fun"
+FILEMAKER_DATABASE = "Front"
+FILEMAKER_LAYOUT_DOCUMENTS = "WEB_guest_documents"
+FILEMAKER_LAYOUT_SESSIONS = "WEB_checkin_sessions"
+FILEMAKER_USERNAME = "full"
+FILEMAKER_PASSWORD = "full"
+
+# R2 Bucket para imágenes (frente, dorso, firma)
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "hotel-checkin-images"
+
+# KV para datos temporales de check-in
+[[kv_namespaces]]
+binding = "CHECKIN_DATA"
+id = "ac2cec54be8b42ffbfefbf492bc0198c"
+
+# Queue para sincronización a FileMaker (requiere plan paid - deshabilitado por ahora)
+# [[queues.producers]]
+# binding = "CHECKIN_QUEUE"
+# queue = "checkin-sync"
+#
+# [[queues.consumers]]
+# queue = "checkin-sync"
+# max_batch_size = 10
+# max_batch_timeout = 30
+
+# Cron Trigger para sincronización automática a FileMaker (gratis)
+# Se ejecuta cada 5 minutos
+[triggers]
+crons = ["*/5 * * * *"]

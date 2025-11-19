@@ -1,0 +1,10 @@
+{
+  "id_session": 2,
+  "reservation_code": "TEST456",
+  "guest_name": "Vazquez Fermin",
+  "guest_dni": "30627652",
+  "check_in_date": "20/11/2025",
+  "check_out_date": "23/11/2025",
+  "email": "reservas@hjmerlo.com.ar",
+  "total_guests": 4
+}

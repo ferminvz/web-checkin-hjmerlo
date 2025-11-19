@@ -1,0 +1,20 @@
+{
+  "name": "web-checkin-api",
+  "version": "2.0.0",
+  "description": "API Worker para Web Check-in - Howard Johnson Merlo",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.80.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
