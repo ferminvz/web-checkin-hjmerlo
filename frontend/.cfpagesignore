@@ -1,0 +1,3 @@
+# Ignore cache files for Cloudflare Pages deployment
+.next/cache/
+node_modules/
