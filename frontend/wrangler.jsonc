@@ -7,14 +7,5 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
-  },
-  "services": [
-    {
-      "binding": "API",
-      "service": "web-checkin-api"
-    }
-  ],
-  "vars": {
-    "NEXT_PUBLIC_API_URL": "https://web-checkin-api.fvazquez-2f3.workers.dev"
   }
 }

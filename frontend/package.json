@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:workers": "opennextjs-cloudflare build && mkdir -p .worker-next/dist && cp -r .open-next/* .worker-next/dist/",
+    "build:workers": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "start": "next start",
